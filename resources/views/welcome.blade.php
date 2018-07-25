@@ -13,7 +13,6 @@
         <!-- Styles -->
         <style>
             html, body {
-                background-color: #fff;
                 color: #636b6f;
                 font-family: 'Raleway', sans-serif;
                 font-weight: 100;
@@ -73,7 +72,7 @@
             [class|=wheelnav-piemenu-title-basic] { fill: #333; stroke: none; }
             [class|=wheelnav-piemenu-title-selected] { fill: #fff; stroke: none; }
             [class|=wheelnav-piemenu-title-hover] { fill: #222; stroke: none; cursor: pointer; }
-            [class|=wheelnav-piemenu-title] > tspan { font-family: Impact, Charcoal, sans-serif; font-size: 24px; }
+            [class|=wheelnav-piemenu-title] > tspan { font-family: Impact, Charcoal, sans-serif; font-size: 12px; }
         </style>
     </head>
     <body>
@@ -88,37 +87,78 @@
                 @endauth
             </div>
             @endif
+            <div id="floatbar" hidden="true" style="background:gray;
+                 width:200px;
+                 height:40px;
+                 position:absolute;
+                 z-index: 1;">
+                <nav>
+                    <h3>Floating Menu</h3>
+                    <ul>
+                        <li><a onclick="return false;" href="#">Menu Item 1</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 2</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 3</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 4</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 5</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 6</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 7</a></li>
+                        <li><a onclick="return false;" href="#">Menu Item 8</a></li>
+                    </ul>
+                </nav>
+            </div>
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                    <a href="https://laravel.com/docs">Documentation</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+            <div class="content" style="z-index: 0;">
+                <div id='piemenu' data-wheelnav
+                     data-wheelnav-slicepath='PieSlice'
+                     data-wheelnav-rotateoff
+                     data-wheelnav-navangle='270'
+                     data-wheelnav-cssmode 
+                     data-wheelnav-init>
+                    <div data-wheelnav-navitemtext='0' onmouseup='selectSabor();'></div>
+                    <div data-wheelnav-navitemtext='1' onmouseup='selectSabor();'></div>
+                    <div data-wheelnav-navitemtext='2' onmouseup='selectSabor();'></div>
+                    <div data-wheelnav-navitemtext='3' onmouseup='selectSabor();'></div>
                 </div>
             </div>
         </div>
-        <div id='piemenu' data-wheelnav
-             data-wheelnav-slicepath='PieSlice'
-             data-wheelnav-rotateoff
-             data-wheelnav-navangle='270'
-             data-wheelnav-cssmode 
-             data-wheelnav-init>
-            <div data-wheelnav-navitemtext='0' onmouseup='alert("Place your logic here.");'></div>
-            <div data-wheelnav-navitemtext='1' onmouseup='alert("Place your logic here.");'></div>
-            <div data-wheelnav-navitemtext='2' onmouseup='alert("Place your logic here.");'></div>
-            <div data-wheelnav-navitemtext='3' onmouseup='alert("Place your logic here.");'></div>
-        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/wheelnav@1.7.1/js/dist/raphael.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/wheelnav@1.7.1/js/dist/wheelnav.min.js"></script>
         <script type="text/javascript">
-            var piemenu = new wheelnav('piemenu');
-            piemenu.clockwise = false;
-            piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
-            piemenu.createWheel();
+                        var piemenu = new wheelnav('piemenu');
+                        piemenu.clockwise = false;
+                        piemenu.wheelRadius = piemenu.wheelRadius * 0.83;
+                        piemenu.createWheel();
+        </script>
+        <script>
+            $(document).ready(function () {
+                document.floatbar = $("#floatbar");
+                document.isSelecting = false;
+                $("body").mousemove(function (e) {
+                    document.posx = e.pageX;
+                    document.posy = e.pageY;
+                });
+                $("body").click(function (e) {
+                    if (document.isSelecting && $("#floatbar").css("visibility") == "visible") {
+                        document.isSelecting = false;
+                    } else {
+                        document.floatbar.fadeOut(250);
+//                        document.floatbar.css({visibility: "hidden"});
+                    }
+                });
+            });
+            function selectSabor() {
+                document.floatbar.fadeOut(250);
+                document.isSelecting = true;
+                let posx = document.posx;
+                let posy = document.posy;
+                setTimeout(function () {
+                    document.floatbar.css({left: posx, top: posy});
+                    document.floatbar.fadeIn(250);
+//                    document.floatbar.css({visibility: "visible"});
+                }, 250);
+            }
+
         </script>
     </body>
 </html>
